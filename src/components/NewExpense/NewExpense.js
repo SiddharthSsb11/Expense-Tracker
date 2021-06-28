@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 
 import ExpenseForm from "./ExpenseForm";
 import "./NewExpense.css";
 
-const NewExpense = (proto) => {
+const NewExpense = (props) => {
+
+  const [formActive, setFormActive] = useState(false);
 
   const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
@@ -11,12 +13,22 @@ const NewExpense = (proto) => {
       id: Math.random().toString()
     }
     //console.log(expenseData);
-    proto.onAddExpense(expenseData);
+    props.onAddExpense(expenseData);
+  }
+
+  const startFormActiveHandler = (e) => {
+    //console.log(e);
+    setFormActive(true);
+  }
+
+  const cancelFormActiveHandler = (e) => {
+    setFormActive(false)
   }
 
   return (
     <div className="new-expense">
-      <ExpenseForm onSaveExpenseData = {saveExpenseDataHandler}/>
+      { !formActive && (<button type="button" onClick={startFormActiveHandler}>Add New Expense</button>)}
+      { formActive &&(<ExpenseForm onSaveExpenseData = {saveExpenseDataHandler} onCancel = {cancelFormActiveHandler}/>)}
     </div>
   );
 };
